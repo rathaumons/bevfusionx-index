@@ -1,0 +1,141 @@
+# -------------------------------------------------------------------------
+#  Copyright 2026 Ratha SIV. All rights reserved.
+#  Apache-2.0 license
+# -------------------------------------------------------------------------
+
+name: build-template-cuda
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build_with_docker_image:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_NAME: project
+      PACKAGE_GIT_URL: "https://github.com/user/project.git"
+      PACKAGE_GIT_TAG: ""
+      WHL_PYTHON_VERSIONS: "['3.11', '3.12', '3.13', '3.14']"
+      INSTALL_TORCH: 0
+      INSTALL_EXTRA: ""
+      INSTALL_TXT: ""
+      PIP_EXTRA_INDEX_URL: ""
+      CUDA_ARCH_LIST: ""
+      NVIDIA_ARCH_TYPE: "cons+jets"
+      NVIDIA_ARCH_MIN: 35
+      AUDITWHEEL_EXCL_LIBS: "['libc10.so', 'libc10_cuda.so', 'libtorch.so', 'libtorch_cpu.so', 'libtorch_cuda.so', 'libtorch_python.so']"
+      BUILD_ISOLATION: 1
+      BUILD_ADDITIONAL_VARS: "FORCE_CUDA=1 WITH_OPS=1"
+    strategy:
+      fail-fast: false
+      matrix:
+        cuda-version: ['128', '130']
+    steps:
+      - name: Clean CI runner
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          docker system prune -af
+      - uses: actions/checkout@v6
+      - name: Pull cu${{ matrix.cuda-version }} image from Docker Hub
+        run: docker pull ratharog/manylinux_2_28_x86_64:cu${{ matrix.cuda-version }}
+      - name: Build cu${{ matrix.cuda-version }} wheels
+        run: |
+          if [ -n "${PACKAGE_GIT_TAG}" ]; then
+            git clone -b "${PACKAGE_GIT_TAG}" "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          else
+            git clone "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          fi
+          chmod +x tools/build-linux-wheels.sh
+          docker run --rm \
+            -e PACKAGE_NAME="${PACKAGE_NAME}" \
+            -e PYTHON_VERSIONS="${WHL_PYTHON_VERSIONS}" \
+            -e INSTALL_TORCH="${INSTALL_TORCH}" \
+            -e INSTALL_EXTRA="${INSTALL_EXTRA}" \
+            -e INSTALL_TXT="${INSTALL_TXT}" \
+            -e PIP_EXTRA_INDEX_URL="${PIP_EXTRA_INDEX_URL}" \
+            -e CUDA_ARCH_LIST="${CUDA_ARCH_LIST}" \
+            -e NVIDIA_ARCH_TYPE="${NVIDIA_ARCH_TYPE}" \
+            -e NVIDIA_ARCH_MIN="${NVIDIA_ARCH_MIN}" \
+            -e AUDITWHEEL_EXCL_LIBS="${AUDITWHEEL_EXCL_LIBS}" \
+            -e BUILD_ISOLATION="${BUILD_ISOLATION}" \
+            -e BUILD_ADDITIONAL_VARS="${BUILD_ADDITIONAL_VARS}" \
+            -e CUDA_VERSION="${{ matrix.cuda-version }}" \
+            -v "$(pwd)":/io \
+            ratharog/manylinux_2_28_x86_64:cu${{ matrix.cuda-version }} \
+            bash -c "source /etc/bashrc && /io/tools/build-linux-wheels.sh"
+      - name: Archive cu${{ matrix.cuda-version }} wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}
+          path: dist/*.whl
+
+  build_with_dockerfile:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_NAME: project
+      PACKAGE_GIT_URL: "https://github.com/user/project.git"
+      PACKAGE_GIT_TAG: ""
+      WHL_PYTHON_VERSIONS: "['3.11', '3.12', '3.13', '3.14']"
+      INSTALL_TORCH: 0
+      INSTALL_EXTRA: ""
+      INSTALL_TXT: ""
+      PIP_EXTRA_INDEX_URL: ""
+      CUDA_ARCH_LIST: ""
+      NVIDIA_ARCH_TYPE: "cons+jets"
+      NVIDIA_ARCH_MIN: 35
+      AUDITWHEEL_EXCL_LIBS: "['libc10.so', 'libc10_cuda.so', 'libtorch.so', 'libtorch_cpu.so', 'libtorch_cuda.so', 'libtorch_python.so']"
+      BUILD_ISOLATION: 1
+      BUILD_ADDITIONAL_VARS: "FORCE_CUDA=1 WITH_OPS=1"
+    strategy:
+      fail-fast: false
+      matrix:
+        cuda-version: ['128', '130']
+    steps:
+      - name: Clean CI runner
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          docker system prune -af
+      - uses: actions/checkout@v6
+      - name: Build cu${{ matrix.cuda-version }} image
+        run: |
+          docker build -t manylinux-cu${{ matrix.cuda-version }} \
+            -f .github/docker/Dockerfile.manylinux_2_28_x86_64.cu${{ matrix.cuda-version }} .
+      - name: Build cu${{ matrix.cuda-version }} wheels
+        run: |
+          if [ -n "${PACKAGE_GIT_TAG}" ]; then
+            git clone -b "${PACKAGE_GIT_TAG}" "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          else
+            git clone "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          fi
+          chmod +x tools/build-linux-wheels.sh
+          docker run --rm \
+            -e PACKAGE_NAME="${PACKAGE_NAME}" \
+            -e PYTHON_VERSIONS="${WHL_PYTHON_VERSIONS}" \
+            -e INSTALL_TORCH="${INSTALL_TORCH}" \
+            -e INSTALL_EXTRA="${INSTALL_EXTRA}" \
+            -e INSTALL_TXT="${INSTALL_TXT}" \
+            -e PIP_EXTRA_INDEX_URL="${PIP_EXTRA_INDEX_URL}" \
+            -e CUDA_ARCH_LIST="${CUDA_ARCH_LIST}" \
+            -e NVIDIA_ARCH_TYPE="${NVIDIA_ARCH_TYPE}" \
+            -e NVIDIA_ARCH_MIN="${NVIDIA_ARCH_MIN}" \
+            -e AUDITWHEEL_EXCL_LIBS="${AUDITWHEEL_EXCL_LIBS}" \
+            -e BUILD_ISOLATION="${BUILD_ISOLATION}" \
+            -e BUILD_ADDITIONAL_VARS="${BUILD_ADDITIONAL_VARS}" \
+            -e CUDA_VERSION="${{ matrix.cuda-version }}" \
+            -v "$(pwd)":/io \
+            manylinux-cu${{ matrix.cuda-version }} \
+            bash -c "source /etc/bashrc && /io/tools/build-linux-wheels.sh"
+      - name: Archive cu${{ matrix.cuda-version }} wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}
+          path: dist/*.whl

@@ -1,0 +1,203 @@
+# -------------------------------------------------------------------------
+#  Copyright 2026 Ratha SIV. All rights reserved.
+#  Apache-2.0 license
+# -------------------------------------------------------------------------
+
+name: build mmcv
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build_cuda_11:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_NAME: "mmcv"
+      PACKAGE_GIT_URL: "https://github.com/rathaROG/mmcv.git"
+      PACKAGE_GIT_TAG: "v1.7.3-bevfusionx"
+      WHL_PYTHON_VERSIONS: "['3.9']"
+      INSTALL_TORCH: 1
+      INSTALL_EXTRA: "setuptools==81.0.0"
+      INSTALL_TXT: ""
+      PIP_EXTRA_INDEX_URL: ""
+      CUDA_ARCH_LIST: ""
+      NVIDIA_ARCH_TYPE: "cons+jets"
+      NVIDIA_ARCH_MIN: 60
+      AUDITWHEEL_EXCL_LIBS: "['libc10.so', 'libc10_cuda.so', 'libtorch.so', 'libtorch_cpu.so', 'libtorch_cuda.so', 'libtorch_python.so']"
+      BUILD_ISOLATION: 0
+      BUILD_ADDITIONAL_VARS: "MMCV_WITH_OPS=1 FORCE_CUDA=1"
+    strategy:
+      fail-fast: false
+      matrix:
+        cuda-version: ['113']
+    steps:
+      - name: Clean CI runner
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          docker system prune -af
+      - uses: actions/checkout@v6
+      - name: Pull cu${{ matrix.cuda-version }} image from Docker Hub
+        run: docker pull ratharog/manylinux_2_28_x86_64:cu${{ matrix.cuda-version }}
+      - name: Build cu${{ matrix.cuda-version }} wheels
+        run: |
+          if [ -n "${PACKAGE_GIT_TAG}" ]; then
+            git clone -b "${PACKAGE_GIT_TAG}" "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          else
+            git clone "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          fi
+          chmod +x tools/build-linux-wheels.sh
+          docker run --rm \
+            -e PACKAGE_NAME="${PACKAGE_NAME}" \
+            -e PYTHON_VERSIONS="${WHL_PYTHON_VERSIONS}" \
+            -e INSTALL_TORCH="${INSTALL_TORCH}" \
+            -e INSTALL_EXTRA="${INSTALL_EXTRA}" \
+            -e INSTALL_TXT="${INSTALL_TXT}" \
+            -e PIP_EXTRA_INDEX_URL="${PIP_EXTRA_INDEX_URL}" \
+            -e CUDA_ARCH_LIST="${CUDA_ARCH_LIST}" \
+            -e NVIDIA_ARCH_TYPE="${NVIDIA_ARCH_TYPE}" \
+            -e NVIDIA_ARCH_MIN="${NVIDIA_ARCH_MIN}" \
+            -e AUDITWHEEL_EXCL_LIBS="${AUDITWHEEL_EXCL_LIBS}" \
+            -e BUILD_ISOLATION="${BUILD_ISOLATION}" \
+            -e BUILD_ADDITIONAL_VARS="${BUILD_ADDITIONAL_VARS}" \
+            -e CUDA_VERSION="${{ matrix.cuda-version }}" \
+            -v "$(pwd)":/io \
+            ratharog/manylinux_2_28_x86_64:cu${{ matrix.cuda-version }} \
+            bash -c "source /etc/bashrc && /io/tools/build-linux-wheels.sh"
+      - name: Archive cu${{ matrix.cuda-version }} wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}
+          path: dist/*.whl
+
+  build_cuda_12_13:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_NAME: "mmcv"
+      PACKAGE_GIT_URL: "https://github.com/rathaROG/mmcv.git"
+      PACKAGE_GIT_TAG: "v1.7.3-bevfusionx"
+      WHL_PYTHON_VERSIONS: "['3.11']"
+      INSTALL_TORCH: 1
+      INSTALL_EXTRA: "setuptools==81.0.0"
+      INSTALL_TXT: ""
+      PIP_EXTRA_INDEX_URL: ""
+      CUDA_ARCH_LIST: ""
+      NVIDIA_ARCH_TYPE: "cons+jets"
+      NVIDIA_ARCH_MIN: 60
+      AUDITWHEEL_EXCL_LIBS: "['libc10.so', 'libc10_cuda.so', 'libtorch.so', 'libtorch_cpu.so', 'libtorch_cuda.so', 'libtorch_python.so']"
+      BUILD_ISOLATION: 0
+      BUILD_ADDITIONAL_VARS: "MMCV_WITH_OPS=1 FORCE_CUDA=1"
+    strategy:
+      fail-fast: false
+      matrix:
+        cuda-version: ['121', '126', '128', '130']
+    steps:
+      - name: Clean CI runner
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          docker system prune -af
+      - uses: actions/checkout@v6
+      - name: Pull cu${{ matrix.cuda-version }} image from Docker Hub
+        run: docker pull ratharog/manylinux_2_28_x86_64:cu${{ matrix.cuda-version }}
+      - name: Build cu${{ matrix.cuda-version }} wheels
+        run: |
+          if [ -n "${PACKAGE_GIT_TAG}" ]; then
+            git clone -b "${PACKAGE_GIT_TAG}" "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          else
+            git clone "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          fi
+          chmod +x tools/build-linux-wheels.sh
+          docker run --rm \
+            -e PACKAGE_NAME="${PACKAGE_NAME}" \
+            -e PYTHON_VERSIONS="${WHL_PYTHON_VERSIONS}" \
+            -e INSTALL_TORCH="${INSTALL_TORCH}" \
+            -e INSTALL_EXTRA="${INSTALL_EXTRA}" \
+            -e INSTALL_TXT="${INSTALL_TXT}" \
+            -e PIP_EXTRA_INDEX_URL="${PIP_EXTRA_INDEX_URL}" \
+            -e CUDA_ARCH_LIST="${CUDA_ARCH_LIST}" \
+            -e NVIDIA_ARCH_TYPE="${NVIDIA_ARCH_TYPE}" \
+            -e NVIDIA_ARCH_MIN="${NVIDIA_ARCH_MIN}" \
+            -e AUDITWHEEL_EXCL_LIBS="${AUDITWHEEL_EXCL_LIBS}" \
+            -e BUILD_ISOLATION="${BUILD_ISOLATION}" \
+            -e BUILD_ADDITIONAL_VARS="${BUILD_ADDITIONAL_VARS}" \
+            -e CUDA_VERSION="${{ matrix.cuda-version }}" \
+            -v "$(pwd)":/io \
+            ratharog/manylinux_2_28_x86_64:cu${{ matrix.cuda-version }} \
+            bash -c "source /etc/bashrc && /io/tools/build-linux-wheels.sh"
+      - name: Archive cu${{ matrix.cuda-version }} wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}
+          path: dist/*.whl
+
+  build_cuda_13d:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_NAME: "mmcv"
+      PACKAGE_GIT_URL: "https://github.com/rathaROG/mmcv.git"
+      PACKAGE_GIT_TAG: "v1.7.3-bevfusionx"
+      WHL_PYTHON_VERSIONS: "['3.11']"
+      INSTALL_TORCH: 1
+      INSTALL_EXTRA: "setuptools==81.0.0"
+      INSTALL_TXT: ""
+      PIP_EXTRA_INDEX_URL: ""
+      CUDA_ARCH_LIST: ""
+      NVIDIA_ARCH_TYPE: "dcen"
+      NVIDIA_ARCH_MIN: 60
+      AUDITWHEEL_EXCL_LIBS: "['libc10.so', 'libc10_cuda.so', 'libtorch.so', 'libtorch_cpu.so', 'libtorch_cuda.so', 'libtorch_python.so']"
+      BUILD_ISOLATION: 0
+      BUILD_ADDITIONAL_VARS: "MMCV_WITH_OPS=1 FORCE_CUDA=1"
+    strategy:
+      fail-fast: false
+      matrix:
+        cuda-version: ['130']
+    steps:
+      - name: Clean CI runner
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          docker system prune -af
+      - uses: actions/checkout@v6
+      - name: Pull cu${{ matrix.cuda-version }} image from Docker Hub
+        run: docker pull ratharog/manylinux_2_28_x86_64:cu${{ matrix.cuda-version }}
+      - name: Build cu${{ matrix.cuda-version }} wheels
+        run: |
+          if [ -n "${PACKAGE_GIT_TAG}" ]; then
+            git clone -b "${PACKAGE_GIT_TAG}" "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          else
+            git clone "${PACKAGE_GIT_URL}" "${PACKAGE_NAME}"
+          fi
+          chmod +x tools/build-linux-wheels.sh
+          docker run --rm \
+            -e PACKAGE_NAME="${PACKAGE_NAME}" \
+            -e PYTHON_VERSIONS="${WHL_PYTHON_VERSIONS}" \
+            -e INSTALL_TORCH="${INSTALL_TORCH}" \
+            -e INSTALL_EXTRA="${INSTALL_EXTRA}" \
+            -e INSTALL_TXT="${INSTALL_TXT}" \
+            -e PIP_EXTRA_INDEX_URL="${PIP_EXTRA_INDEX_URL}" \
+            -e CUDA_ARCH_LIST="${CUDA_ARCH_LIST}" \
+            -e NVIDIA_ARCH_TYPE="${NVIDIA_ARCH_TYPE}" \
+            -e NVIDIA_ARCH_MIN="${NVIDIA_ARCH_MIN}" \
+            -e AUDITWHEEL_EXCL_LIBS="${AUDITWHEEL_EXCL_LIBS}" \
+            -e BUILD_ISOLATION="${BUILD_ISOLATION}" \
+            -e BUILD_ADDITIONAL_VARS="${BUILD_ADDITIONAL_VARS}" \
+            -e CUDA_VERSION="${{ matrix.cuda-version }}" \
+            -v "$(pwd)":/io \
+            ratharog/manylinux_2_28_x86_64:cu${{ matrix.cuda-version }} \
+            bash -c "source /etc/bashrc && /io/tools/build-linux-wheels.sh"
+      - name: Archive cu${{ matrix.cuda-version }} wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}d
+          path: dist/*.whl

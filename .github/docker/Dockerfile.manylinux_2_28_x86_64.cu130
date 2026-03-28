@@ -1,0 +1,35 @@
+# -------------------------------------------------------------------------
+#  Copyright 2026 Ratha SIV. All rights reserved.
+#  Apache-2.0 license
+# -------------------------------------------------------------------------
+
+FROM quay.io/pypa/manylinux_2_28_x86_64@sha256:3f18f5823fde88372a154b52e07758096bd90eae3547b0c6866818470c82255f
+
+# Install GCC/G++ 9 and wget
+RUN yum install -y gcc-toolset-9 wget \
+    && echo "source /opt/rh/gcc-toolset-9/enable" >> /etc/profile.d/gcc9.sh
+
+# Ensure all RUN commands use GCC 9
+SHELL ["/bin/bash", "-lc"]
+
+# Install CUDA Toolkit (headless, toolkit only)
+RUN wget -q https://developer.download.nvidia.com/compute/cuda/13.0.2/local_installers/cuda_13.0.2_580.95.05_linux.run \
+    && chmod +x cuda_13.0.2_580.95.05_linux.run \
+    && ./cuda_13.0.2_580.95.05_linux.run --silent --toolkit --no-drm --no-opengl-libs \
+    && rm -f cuda_*.run
+
+# Export CUDA paths
+ENV PATH=/usr/local/cuda/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+# Save plat string
+RUN echo "manylinux_2_28_x86_64" > /etc/manylinux-platform-tag
+
+# Final cleanup
+RUN yum clean all \
+    && rm -rf /var/cache/yum \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/* \
+    && find /usr/local -type f -name '*.log' -delete \
+    && find / -type f -name '*.pyc' -delete \
+    && find / -type d -name '__pycache__' -exec rm -rf {} +
