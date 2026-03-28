@@ -15,7 +15,7 @@ jobs:
     env:
       PACKAGE_NAME: "mmcv"
       PACKAGE_GIT_URL: "https://github.com/rathaROG/mmcv.git"
-      PACKAGE_GIT_TAG: "v1.7.3-bevfusionx"
+      PACKAGE_GIT_TAG: "bevfusionx-dev"
       WHL_PYTHON_VERSIONS: "['3.9']"
       INSTALL_TORCH: 1
       INSTALL_EXTRA: "setuptools==81.0.0"
@@ -79,7 +79,7 @@ jobs:
     env:
       PACKAGE_NAME: "mmcv"
       PACKAGE_GIT_URL: "https://github.com/rathaROG/mmcv.git"
-      PACKAGE_GIT_TAG: "v1.7.3-bevfusionx"
+      PACKAGE_GIT_TAG: "bevfusionx-dev"
       WHL_PYTHON_VERSIONS: "['3.11']"
       INSTALL_TORCH: 1
       INSTALL_EXTRA: "setuptools==81.0.0"
@@ -143,7 +143,7 @@ jobs:
     env:
       PACKAGE_NAME: "mmcv"
       PACKAGE_GIT_URL: "https://github.com/rathaROG/mmcv.git"
-      PACKAGE_GIT_TAG: "v1.7.3-bevfusionx"
+      PACKAGE_GIT_TAG: "bevfusionx-dev"
       WHL_PYTHON_VERSIONS: "['3.11']"
       INSTALL_TORCH: 1
       INSTALL_EXTRA: "setuptools==81.0.0"
