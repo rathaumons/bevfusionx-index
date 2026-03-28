@@ -1,0 +1,31 @@
+name: generate indexation
+
+on:
+  push:
+    paths:
+      - ".github/indexation/indexation.yaml"
+      - ".github/indexation/indexation.py"
+      - ".github/indexation/index_template.html.tpl"
+  workflow_dispatch:
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout rathaumons/bevfusionx-index
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install dependencies
+        run: pip install PyYAML
+      - name: Run indexation generator
+        run: INDEX_OUTPUT_DIR="${PWD}" python .github/indexation/indexation.py
+      - name: Commit and push updated index files
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Auto-update indexation" || echo "No changes to commit"
+          git push

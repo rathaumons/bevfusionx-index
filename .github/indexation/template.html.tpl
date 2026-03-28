@@ -9,10 +9,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>torchpack – any</title>
+    <title>{package_name} – {compute_platform}</title>
 </head>
 <body>
-    <h2>Index of any/torchpack</h2>
+    <h2>Index of {compute_platform}/{package_name}</h2>
 
     <p>
         <a href="../../index.html">Home</a> |
@@ -21,8 +21,7 @@
 
     <hr>
 
-    <a href="https://github.com/rathaumons/bevfusionx-index/releases/download/v0.3.2-torchpack-any/torchpack-0.3.2+bevfusionx-py3-none-any.whl">torchpack-0.3.2+bevfusionx-py3-none-any.whl</a><br>
-    <a href="https://github.com/rathaumons/bevfusionx-index/releases/download/v0.3.2-torchpack-any/torchpack-0.3.2+bevfusionx.tar.gz">torchpack-0.3.2+bevfusionx.tar.gz</a><br>
+    {links_here}
 
     <hr>
     <p>Generated automatically from indexation.yaml</p>
