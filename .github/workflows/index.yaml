@@ -19,7 +19,9 @@ jobs:
         with:
           python-version: "3.14"
       - name: Install dependencies
-        run: pip install PyYAML
+        run: |
+          python -m pip install -U pip
+          python -m pip install PyYAML
       - name: Run indexation generator
         run: INDEX_OUTPUT_DIR="${PWD}" python .github/indexation/indexation.py
       - name: Commit and push updated index files
