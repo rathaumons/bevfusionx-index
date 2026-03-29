@@ -111,4 +111,7 @@ for whl in /io/tmp/*.whl; do
   repair_wheel "$whl" /io/dist
 done
 
+echo "Copying source distributions *.tar.gz to /io/dist ..."
+find /io/tmp -maxdepth 1 -type f -name "*.tar.gz" -exec cp {} /io/dist/ \;
+
 rm -rf /io/tmp
