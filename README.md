@@ -18,13 +18,13 @@ Examples:
 
 ```bash
 # torchpack - any (for both CPU/GPU)
-pip install torchpack --extra-index-url https://rathaumons.github.io/bevfusionx-index/any/
+pip install torchpack==0.3.2 --extra-index-url https://rathaumons.github.io/bevfusionx-index/any/
 
 # flash-attention - cu130 (CUDA 13.0 for Consumer + Workstation + Jetson)
-pip install flash-attn --extra-index-url https://rathaumons.github.io/bevfusionx-index/cu130/
+pip install flash-attn==1.2.1 --extra-index-url https://rathaumons.github.io/bevfusionx-index/cu130/
 
 # mmcv - cu130d (CUDA 13.0 for Data Center)
-pip install mmcv-full --extra-index-url https://rathaumons.github.io/bevfusionx-index/cu130d/
+pip install mmcv-full==1.7.4 --extra-index-url https://rathaumons.github.io/bevfusionx-index/cu130d/
 ```
 
 ## Summary Table
