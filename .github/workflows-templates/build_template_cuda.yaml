@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}
-          path: dist/*.whl
+          path: dist/*
 
   build_with_dockerfile:
     runs-on: ubuntu-latest
@@ -138,4 +138,4 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}
-          path: dist/*.whl
+          path: dist/*
