@@ -99,7 +99,8 @@ for pv in $VERSIONS; do
       export ${BUILD_ADDITIONAL_VARS}
     fi
 
-    "${PYBIN}/python" -m build ${no_isolation} --wheel --outdir /io/tmp /io/${PACKAGE_NAME}
+    # "${PYBIN}/python" -m build ${no_isolation} --wheel --outdir /io/tmp /io/${PACKAGE_NAME}  # only wheel
+    "${PYBIN}/python" -m build ${no_isolation} --sdist --wheel --outdir /io/tmp /io/${PACKAGE_NAME}  # both wheel and source
 
   else
     echo "SKIP: Python version ${py_tag} not found."
