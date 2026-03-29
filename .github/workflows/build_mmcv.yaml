@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}
-          path: dist/*.whl
+          path: dist/*
 
   build_cuda_12_13:
     runs-on: ubuntu-latest
@@ -136,7 +136,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}
-          path: dist/*.whl
+          path: dist/*
 
   build_cuda_13d:
     runs-on: ubuntu-latest
@@ -200,4 +200,4 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: dist-${{ env.PACKAGE_NAME }}-cu${{ matrix.cuda-version }}d
-          path: dist/*.whl
+          path: dist/*
