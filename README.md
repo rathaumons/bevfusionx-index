@@ -45,4 +45,22 @@ pip install mmcv-full --extra-index-url https://rathaumons.github.io/bevfusionx-
 | [`mmcv-full`](https://github.com/rathaROG/mmcv) | [`v1.7.3`](https://github.com/rathaROG/mmcv/releases/tag/v1.7.3-bevfusionx) | [`cu121`](https://rathaumons.github.io/bevfusionx-index/cu121) | [`v1.7.3-mmcv-cu121`](https://github.com/rathaumons/bevfusionx-index/releases/tag/v1.7.3-mmcv-cu121) | `2.5.1+cu121`/`0.20.1+cu121` |
 | [`mmcv-full`](https://github.com/rathaROG/mmcv) | [`v1.7.3`](https://github.com/rathaROG/mmcv/releases/tag/v1.7.3-bevfusionx) | [`cu113`](https://rathaumons.github.io/bevfusionx-index/cu113) | [`v1.7.3-mmcv-cu113`](https://github.com/rathaumons/bevfusionx-index/releases/tag/v1.7.3-mmcv-cu113) | `1.12.1+cu113`/`0.13.1+cu113` |
 
-THESE WHEELS ARE BUILT SPECIFICALLY FOR [**`BEVFUSION𝕏`**](https://github.com/rathaumons/bevfusionx) AND MAY NOT WORK IN YOUR ENVIROMENT.
+THESE WHEELS WERE BUILT SPECIFICALLY FOR [**`BEVFUSION𝕏`**](https://github.com/rathaumons/bevfusionx) AND MAY NOT WORK IN YOUR ENVIROMENT.
+
+## NVIDIA Architecture
+
+The targeted NVIDIA GPU architectures for these builds were determined based on the logic of [`nvidia-arch`](https://github.com/rathaROG/nvidia-arch) using `gpu_type="cons+jets", min_sm=60`, except for:
+
+- The `cu130d` builds, which used `gpu_type="dcen"`.
+- The `flash-attn` builds, which used `min_sm=75` since it does not support older architectures.
+
+| Index Suffix |  Included NVIDIA Arches for NVCC |
+| - | - |
+| `cu130` | `7.5;8.6;8.7;8.9;11.0;12.0;12.1+PTX` |
+| `cu130d` | `7.5;8.0;8.6;8.9;9.0;10.0;10.3;12.0+PTX` |
+| `cu128` | `6.0;6.1;6.2;7.0;7.2;7.5;8.6;8.7;8.9;12.0+PTX` |
+| `cu126` | `6.0;6.1;6.2;7.0;7.2;7.5;8.6;8.7;8.9+PTX` |
+| `cu121` | `6.0;6.1;6.2;7.0;7.2;7.5;8.6;8.7;8.9+PTX` |
+| `cu113` | `6.0;6.1;6.2;7.0;7.2;7.5;8.6+PTX` |
+
+The base Docker images are sourced from [ratharog/manylinux_2_28_x86_64](https://hub.docker.com/r/ratharog/manylinux_2_28_x86_64).
