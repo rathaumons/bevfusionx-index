@@ -68,7 +68,7 @@ indexes:
         releases:
           - version: v1.7.3
             release_tag: v1.7.3-mmcv-cu113
-            build_log: null
+            build_log: 
             pytorch:
               torch: 1.12.1+cu113
               torchvision: 0.13.1+cu113
@@ -77,7 +77,7 @@ indexes:
               - mmcv_full-1.7.3+bevfusionx.tar.gz
           - version: v1.7.4
             release_tag: v1.7.4-mmcv-cu113
-            build_log: logs_62474954325.zip
+            build_log: logs_unknown_002.zip
             pytorch:
               torch: 1.12.1+cu113
               torchvision: 0.13.1+cu113
@@ -103,7 +103,7 @@ indexes:
         releases:
           - version: v1.7.3
             release_tag: v1.7.3-mmcv-cu121
-            build_log: null
+            build_log: 
             pytorch:
               torch: 2.5.1+cu121
               torchvision: 0.20.1+cu121
@@ -112,7 +112,7 @@ indexes:
               - mmcv_full-1.7.3+bevfusionx.tar.gz
           - version: v1.7.4
             release_tag: v1.7.4-mmcv-cu121
-            build_log: logs_62474954325.zip
+            build_log: logs_unknown_002.zip
             pytorch:
               torch: 2.5.1+cu121
               torchvision: 0.20.1+cu121
@@ -138,7 +138,7 @@ indexes:
         releases:
           - version: v1.7.3
             release_tag: v1.7.3-mmcv-cu126
-            build_log: null
+            build_log: 
             pytorch:
               torch: 2.11.0+cu126
               torchvision: 0.26.0+cu126
@@ -147,7 +147,7 @@ indexes:
               - mmcv_full-1.7.3+bevfusionx.tar.gz
           - version: v1.7.4
             release_tag: v1.7.4-mmcv-cu126
-            build_log: logs_62474954325.zip
+            build_log: logs_unknown_002.zip
             pytorch:
               torch: 2.11.0+cu126
               torchvision: 0.26.0+cu126
@@ -173,7 +173,7 @@ indexes:
         releases:
           - version: v1.7.3
             release_tag: v1.7.3-mmcv-cu128
-            build_log: null
+            build_log: 
             pytorch:
               torch: 2.11.0+cu128
               torchvision: 0.26.0+cu128
@@ -182,7 +182,7 @@ indexes:
               - mmcv_full-1.7.3+bevfusionx.tar.gz
           - version: v1.7.4
             release_tag: v1.7.4-mmcv-cu128
-            build_log: logs_62474954325.zip
+            build_log: logs_unknown_002.zip
             pytorch:
               torch: 2.11.0+cu128
               torchvision: 0.26.0+cu128
@@ -208,7 +208,7 @@ indexes:
         releases:
           - version: v1.7.3
             release_tag: v1.7.3-mmcv-cu130d
-            build_log: null
+            build_log: 
             pytorch:
               torch: 2.11.0+cu130
               torchvision: 0.26.0+cu130
@@ -217,7 +217,7 @@ indexes:
               - mmcv_full-1.7.3+bevfusionx.tar.gz
           - version: v1.7.4
             release_tag: v1.7.4-mmcv-cu130d
-            build_log: logs_62474954325.zip
+            build_log: logs_unknown_002.zip
             pytorch:
               torch: 2.11.0+cu130
               torchvision: 0.26.0+cu130
@@ -243,16 +243,19 @@ indexes:
         releases:
           - version: v1.7.3
             release_tag: v1.7.3-mmcv-cu130
-            build_log: null
+            build_log: 
             pytorch:
               torch: 2.11.0+cu130
               torchvision: 0.26.0+cu130
             dist:
               - mmcv_full-1.7.3+bevfusionx-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
               - mmcv_full-1.7.3+bevfusionx.tar.gz
+      - project_name: mmcv
+        package_name: mmcv-full
+        releases:
           - version: v1.7.4
             release_tag: v1.7.4-mmcv-cu130
-            build_log: logs_62474954325.zip
+            build_log: logs_unknown_002.zip
             pytorch:
               torch: 2.11.0+cu130
               torchvision: 0.26.0+cu130

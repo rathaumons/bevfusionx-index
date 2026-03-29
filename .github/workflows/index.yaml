@@ -5,7 +5,8 @@ on:
     paths:
       - ".github/indexation/indexation.yaml"
       - ".github/indexation/indexation.py"
-      - ".github/indexation/index_template.html.tpl"
+      - ".github/indexation/index-template.html.tpl"
+      - ".github/indexation/release-block-template.html.tpl"
   workflow_dispatch:
 
 jobs:

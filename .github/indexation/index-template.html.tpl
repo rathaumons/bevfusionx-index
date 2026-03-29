@@ -21,9 +21,8 @@
 
     <hr>
 
-    {links_here}
+    {release_blocks}
 
-    <hr>
-    <p>Generated automatically from indexation.yaml</p>
+    <p>Generated automatically from <a href="https://github.com/rathaumons/bevfusionx-index/blob/main/.github/workflows/index.yaml">index.yaml</a> workflow.</p>
 </body>
 </html>
