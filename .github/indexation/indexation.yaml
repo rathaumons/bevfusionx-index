@@ -191,6 +191,30 @@ indexes:
               - mmcv_full-1.7.4+bevfusionx.tar.gz
   - compute_platform: cu130d
     packages:
+      - project_name: spconv-gpu
+        package_name: spconv-cu130
+        releases:
+          - version: v2.4.1
+            release_tag: v2.4.1-spconv-cu130d
+            build_log: logs_63313441551.zip
+            pytorch:
+              torch: null
+              torchvision: null
+            dist:
+              - spconv_cu130-2.4.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+              - spconv_cu130-2.4.1.tar.gz
+      - project_name: cumm-gpu
+        package_name: cumm-cu130
+        releases:
+          - version: v0.9.1
+            release_tag: v0.9.1-cumm-cu130d
+            build_log: logs_63313441551.zip
+            pytorch:
+              torch: null
+              torchvision: null
+            dist:
+              - cumm_cu130-0.9.1-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl
+              - cumm_cu130-0.9.1.tar.gz
       - project_name: flash-attention
         package_name: flash-attn
         releases:
