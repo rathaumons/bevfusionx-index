@@ -152,7 +152,7 @@ def update_readme_summary_table(yaml_path: str, readme_path: str):
 
     new_table = (
         "## Summary Table\n\n"
-        "| Package</br>Name | Latest</br>Version | Index</br>Suffix | Release</br>Tag | Built with PyTorch</br>`torch`/`torchvision` |\n"
+        "| Package<br>Name | Latest<br>Version | Index<br>Suffix | Release<br>Tag | Built with PyTorch<br>`torch`/`torchvision` |\n"
         "| - | - | - | - | - |\n"
         f"{table_body}\n\n"
     )
