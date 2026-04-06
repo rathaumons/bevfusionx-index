@@ -29,7 +29,7 @@ pip install mmcv-full==1.7.4 --extra-index-url https://rathaumons.github.io/bevf
 
 ## Summary Table
 
-| Package<br>Name | Latest<br>Version | Index<br>Suffix | Release<br>Tag | Built with PyTorch<br>`torch`/`torchvision` |
+| Package<br>Name | Latest<br>Version | Index<br>Suffix | Release<br>Tag | Built using PyTorch<br>`torch`/`torchvision` |
 | - | - | - | - | - |
 | `cumm-cu130` | `v0.9.1` | [`cu130d`](https://rathaumons.github.io/bevfusionx-index/cu130d) | [`v0.9.1-cumm-cu130d`](https://github.com/rathaumons/bevfusionx-index/releases/tag/v0.9.1-cumm-cu130d) | `None`/`None` |
 | `flash-attn` | `v1.2.1` | [`cu113`](https://rathaumons.github.io/bevfusionx-index/cu113) | [`v1.2.1-flash-attention-cu113`](https://github.com/rathaumons/bevfusionx-index/releases/tag/v1.2.1-flash-attention-cu113) | `1.12.1+cu113`/`0.13.1+cu113` |
