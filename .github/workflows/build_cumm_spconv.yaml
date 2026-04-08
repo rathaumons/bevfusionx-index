@@ -3,7 +3,7 @@
 #  Apache-2.0 license
 # -------------------------------------------------------------------------
 
-# Prebuilt wheels of cumm-spconv for consumer, workstation, and jetson is 
+# Prebuilt wheels of cumm-spconv for consumer, workstation, and jetson are 
 # already available here: https://ratharog.github.io/cumm-spconv/
 
 name: build cumm-spconv
